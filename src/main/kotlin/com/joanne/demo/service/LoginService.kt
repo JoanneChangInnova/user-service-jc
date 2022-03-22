@@ -19,7 +19,7 @@ class LoginService(@Autowired val userRepository: UserRepository) {
         if (user != null) {
             val password = EncryptionUtils.sha256(loginInfo.password)
             if (password.equals(user.password)) {
-                val userInfo = UserInfoVo(user.id, user.account, user.username, user.password, user.roleId)
+                val userInfo = UserInfoVo(user.id, user.username, user.account, user.roleId)
                 return ResponseVo(200, "authenticated User", userInfo)
             }
         }

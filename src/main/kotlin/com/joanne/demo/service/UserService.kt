@@ -15,12 +15,12 @@ class UserService(@Autowired val userRepository: UserRepository) {
 
     fun addUser(userInfoVo: UserInfoVo?): ResponseVo<Any> {
         return try {
-            checkField(userInfoVo?.username, userInfoVo?.account, userInfoVo?.password, userInfoVo?.roleId)
+            checkField(userInfoVo?.name, userInfoVo?.account, userInfoVo?.password, userInfoVo?.role_id)
             var newUser = Users(
-                userInfoVo?.username,
+                userInfoVo?.name,
                 userInfoVo?.account,
                 EncryptionUtils.sha256(userInfoVo?.password),
-                userInfoVo?.roleId
+                userInfoVo?.role_id
             )
             userRepository.save(newUser)
             ResponseVo(200, "Create new user successfully", newUser)
@@ -51,7 +51,7 @@ class UserService(@Autowired val userRepository: UserRepository) {
             user.ifPresent {
                 it.username = updateUserInfo?.username
                 userRepository.save(it)
-                updatedUser = UserInfoVo(it.id, it.account, it.username, it.password, it.roleId)
+                updatedUser = UserInfoVo(it.id, it.username, it.account, it.roleId)
             }
             return ResponseVo(200, "Update user successfully", updatedUser)
         } else {
